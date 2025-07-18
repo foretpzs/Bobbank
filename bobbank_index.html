@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BobBank - Ваш надежный банк</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <button class="logout-btn hidden" onclick="logout()">Выйти</button>
+        
+        <div class="logo">
+            <h1>💰 BobBank</h1>
+            <p>Ваш надежный банк</p>
+        </div>
+
+        <!-- Главное меню -->
+        <div id="mainMenu" class="hidden">
+            <div class="user-info">
+                <h3>Добро пожаловать, <span id="currentUser"></span>!</h3>
+                <p>Ваш личный кабинет</p>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('credit')">Кредит</div>
+                <div class="tab" onclick="showTab('history')">История</div>
+            </div>
+
+            <div id="creditTab">
+                <div class="credit-info">
+                    <h3>Процентные ставки:</h3>
+                    <p>• 100-500 евро: 30% годовых</p>
+                    <p>• 500-10000 евро: 20% годовых</p>
+                    <p>• Свыше 10000 евро: 25% годовых</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="loanAmount">Сумма кредита (евро):</label>
+                    <input type="number" id="loanAmount" min="100" placeholder="Введите сумму от 100 евро">
+                </div>
+
+                <button class="btn" onclick="calculateLoan()">Рассчитать кредит</button>
+
+                <div id="loanResult" class="hidden"></div>
+            </div>
+
+            <div id="historyTab" class="hidden">
+                <h3>История кредитов</h3>
+                <div id="creditHistory"></div>
+            </div>
+        </div>
+
+        <!-- Форма входа/регистрации -->
+        <div id="authForm">
+            <div class="tabs">
+                <div class="tab active" onclick="showAuthTab('login')">Вход</div>
+                <div class="tab" onclick="showAuthTab('register')">Регистрация</div>
+            </div>
+
+            <div id="loginTab">
+                <div class="form-group">
+                    <label for="loginNick">Никнейм в Minecraft:</label>
+                    <input type="text" id="loginNick" placeholder="Введите ваш никнейм">
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Кодовое слово:</label>
+                    <input type="password" id="loginPassword" placeholder="Введите кодовое слово">
+                </div>
+
+                <button class="btn" onclick="login()">Войти</button>
+                <div id="loginError" class="error"></div>
+            </div>
+
+            <div id="registerTab" class="hidden">
+                <div class="form-group">
+                    <label for="registerNick">Никнейм в Minecraft:</label>
+                    <input type="text" id="registerNick" placeholder="Введите ваш никнейм">
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">Придумайте кодовое слово:</label>
+                    <input type="password" id="registerPassword" placeholder="Придумайте кодовое слово">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Подтвердите кодовое слово:</label>
+                    <input type="password" id="confirmPassword" placeholder="Повторите кодовое слово">
+                </div>
+
+                <button class="btn" onclick="register()">Зарегистрироваться</button>
+                <div id="registerError" class="error"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="calculate.js"></script>
+</body>
+</html>
