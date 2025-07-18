@@ -1,0 +1,236 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo h1 {
+    color: #667eea;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.logo p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #6c757d;
+}
+
+.hidden {
+    display: none;
+}
+
+.credit-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.credit-result {
+    background: #e8f5e8;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 2px solid #4CAF50;
+}
+
+.contract {
+    background: white;
+    padding: 20px;
+    border: 2px solid #333;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.success {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+.tab.active {
+    background: #667eea;
+    color: white;
+}
+
+.tab:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+.tab:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #dc3545;
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.user-info {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.download-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.download-buttons button {
+    flex: 1;
+}
+
+/* Стили для чекбоксов */
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .logo h1 {
+        font-size: 2em;
+    }
+    
+    .download-buttons {
+        flex-direction: column;
+    }
+    
+    .download-buttons button {
+        width: 100%;
+    }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Стили для предварительного просмотра договора */
+.contract pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.4;
+}
