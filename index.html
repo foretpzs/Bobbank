@@ -49,11 +49,6 @@
             background: #2ea043;
         }
 
-        .sell-btn:disabled {
-            background: #30363d;
-            cursor: not-allowed;
-        }
-
         .container {
             max-width: 1280px;
             margin: 0 auto;
@@ -176,8 +171,6 @@
             padding: 24px;
             max-width: 500px;
             width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         .modal-header {
@@ -259,67 +252,22 @@
             transition: background 0.2s;
         }
 
-        .submit-btn:hover:not(:disabled) {
+        .submit-btn:hover {
             background: #2ea043;
         }
 
-        .submit-btn:disabled {
-            background: #30363d;
-            cursor: not-allowed;
-        }
-
-        .success-message {
-            background: #238636;
-            color: white;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .error-message {
-            background: #da3633;
-            color: white;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
         .setup-notice {
-            background: #f85149;
+            background: #1f6feb;
             color: white;
-            padding: 16px 20px;
+            padding: 12px 20px;
             text-align: center;
             font-size: 14px;
-            line-height: 1.6;
         }
 
         .setup-notice code {
             background: rgba(255,255,255,0.2);
             padding: 2px 6px;
             border-radius: 3px;
-            font-family: monospace;
-        }
-
-        .setup-notice strong {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-
-        .setup-steps {
-            text-align: left;
-            max-width: 800px;
-            margin: 12px auto 0;
-        }
-
-        .setup-steps ol {
-            margin-left: 20px;
-        }
-
-        .setup-steps li {
-            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -341,7 +289,6 @@
                 <h2>List Your Item</h2>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            <div id="formMessage"></div>
             <form id="itemForm">
                 <div class="form-group">
                     <label>Name <span class="required">*</span></label>
@@ -375,7 +322,7 @@
                     </label>
                 </div>
 
-                <button type="submit" class="submit-btn" id="submitBtn">Create Listing</button>
+                <button type="submit" class="submit-btn">Create Listing</button>
             </form>
         </div>
     </div>
@@ -383,30 +330,18 @@
     <script>
         // CONFIGURE THESE
         const GITHUB_USERNAME = 'foretpzs';
-        const GITHUB_REPO = 'BWR-WEB';
-        
-        // Add your GitHub Personal Access Token here to allow posting without login
-        // Leave empty to use the old method (requires GitHub account)
-        const GITHUB_TOKEN = ''; // Add your token here like: 'ghp_xxxxxxxxxxxx'
+        const GITHUB_REPO = 'BWT-WEB';
 
         function openModal() {
             document.getElementById('modal').classList.add('active');
-            document.getElementById('formMessage').innerHTML = '';
         }
 
         function closeModal() {
             document.getElementById('modal').classList.remove('active');
-            document.getElementById('itemForm').reset();
-            document.getElementById('formMessage').innerHTML = '';
         }
 
         function closeModalOnOutside(e) {
             if (e.target.id === 'modal') closeModal();
-        }
-
-        function showMessage(message, isError = false) {
-            const messageDiv = document.getElementById('formMessage');
-            messageDiv.innerHTML = `<div class="${isError ? 'error-message' : 'success-message'}">${message}</div>`;
         }
 
         async function loadItems() {
@@ -452,42 +387,8 @@
             }
         }
 
-        async function createIssueDirectly(name, price, image, telegram, description, isUsed) {
-            const issueBody = `**Name:** ${name}
-**Price:** ${price}
-**Image:** ${image}
-**Telegram:** ${telegram}
-**Condition:** ${isUsed ? 'Used' : 'New'}
-**Description:**
-${description || 'No description'}`;
-
-            const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/issues`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `token ${GITHUB_TOKEN}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    title: name,
-                    body: issueBody,
-                    labels: ['marketplace-item']
-                })
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'Failed to create listing');
-            }
-
-            return await response.json();
-        }
-
-        document.getElementById('itemForm').addEventListener('submit', async (e) => {
+        document.getElementById('itemForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Creating...';
             
             const name = document.getElementById('name').value;
             const price = document.getElementById('price').value;
@@ -496,43 +397,19 @@ ${description || 'No description'}`;
             const description = document.getElementById('description').value;
             const isUsed = document.getElementById('used').checked;
             
-            if (GITHUB_TOKEN) {
-                // Method 1: Direct API creation (no GitHub account needed)
-                try {
-                    await createIssueDirectly(name, price, image, telegram, description, isUsed);
-                    showMessage('✅ Item listed successfully! Refreshing...');
-                    setTimeout(() => {
-                        closeModal();
-                        loadItems();
-                    }, 2000);
-                } catch (error) {
-                    showMessage('❌ Error: ' + error.message, true);
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Create Listing';
-                }
-            } else {
-                // Method 2: Redirect to GitHub (requires account)
-                const issueBody = `**Name:** ${name}
+            const issueBody = `**Name:** ${name}
 **Price:** ${price}
 **Image:** ${image}
 **Telegram:** ${telegram}
 **Condition:** ${isUsed ? 'Used' : 'New'}
 **Description:**
 ${description || 'No description'}`;
-                
-                const issueUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO}/issues/new?title=${encodeURIComponent(name)}&body=${encodeURIComponent(issueBody)}&labels=marketplace-item`;
-                
-                window.open(issueUrl, '_blank');
-                showMessage('⚠️ Opening GitHub... You need to sign in and click "Submit new issue"');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Create Listing';
-            }
+            
+            const issueUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO}/issues/new?title=${encodeURIComponent(name)}&body=${encodeURIComponent(issueBody)}&labels=marketplace-item`;
+            
+            window.open(issueUrl, '_blank');
+            closeModal();
         });
-
-        // Check if token is configured
-        if (!GITHUB_TOKEN) {
-            document.getElementById('setupNotice').style.display = 'block';
-        }
 
         loadItems();
     </script>
