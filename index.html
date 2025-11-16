@@ -1,100 +1,389 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BobBank - Ваш надежный банк</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Virtual World Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #c9d1d9;
+        }
+
+        .sell-btn {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .sell-btn:hover {
+            background: #2ea043;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .item-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .item-card:hover {
+            border-color: #58a6ff;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #0d1117;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .item-content {
+            padding: 16px;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #58a6ff;
+            margin-bottom: 8px;
+        }
+
+        .item-price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #7ee787;
+            margin-bottom: 12px;
+        }
+
+        .item-description {
+            font-size: 14px;
+            color: #8b949e;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            background: #238636;
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .contact-btn:hover {
+            background: #2ea043;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #8b949e;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #8b949e;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #c9d1d9;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #c9d1d9;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .required {
+            color: #f85149;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #2ea043;
+        }
+
+        .setup-notice {
+            background: #1f6feb;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .setup-notice code {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
+    <div class="setup-notice">
+        ⚙️ Setup: Edit the code and replace <code>YOUR_USERNAME</code> and <code>YOUR_REPO</code> with your GitHub info
+    </div>
+
+    <div class="header">
+        <h1>Virtual World Marketplace</h1>
+        <button class="sell-btn" onclick="openModal()">+ Sell Item</button>
+    </div>
+
     <div class="container">
-        <button class="logout-btn hidden" onclick="logout()">Выйти</button>
-        
-        <div class="logo">
-            <h1>🏦 Bob Bank</h1>
-            <p>Надежное банковское обслуживание</p>
-        </div>
-
-        <!-- Главное меню -->
-        <div id="mainMenu" class="hidden">
-            <div class="user-info">
-                <h3>Добро пожаловать, <span id="currentUser"></span>!</h3>
-                <p>Ваш личный кабинет</p>
-            </div>
-            
-            <div class="tabs">
-                <div class="tab active" onclick="showTab('credit')">Кредит</div>
-                <div class="tab" onclick="showTab('history')">История</div>
-            </div>
-
-            <div id="creditTab">
-                <div class="credit-info">
-                    <h3>Процентные ставки:</h3>
-                    <p>• 100-500 евро: 30% годовых</p>
-                    <p>• 500-10000 евро: 20% годовых</p>
-                    <p>• Свыше 10000 евро: 25% годовых</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="loanAmount">Сумма кредита (евро):</label>
-                    <input type="number" id="loanAmount" min="100" placeholder="Введите сумму от 100 евро">
-                </div>
-
-                <button class="btn" onclick="calculateLoan()">Рассчитать кредит</button>
-
-                <div id="loanResult" class="hidden"></div>
-            </div>
-
-            <div id="historyTab" class="hidden">
-                <h3>История кредитов</h3>
-                <div id="creditHistory"></div>
-            </div>
-        </div>
-
-        <!-- Форма входа/регистрации -->
-        <div id="authForm">
-            <div class="tabs">
-                <div class="tab active" onclick="showAuthTab('login')">Вход</div>
-                <div class="tab" onclick="showAuthTab('register')">Регистрация</div>
-            </div>
-
-            <div id="loginTab">
-                <div class="form-group">
-                    <label for="loginNick">Никнейм в Minecraft:</label>
-                    <input type="text" id="loginNick" placeholder="Введите ваш никнейм">
-                </div>
-
-                <div class="form-group">
-                    <label for="loginPassword">Кодовое слово:</label>
-                    <input type="password" id="loginPassword" placeholder="Введите кодовое слово">
-                </div>
-
-                <button class="btn" onclick="login()">Войти</button>
-                <div id="loginError" class="error"></div>
-            </div>
-
-            <div id="registerTab" class="hidden">
-                <div class="form-group">
-                    <label for="registerNick">Никнейм в Minecraft:</label>
-                    <input type="text" id="registerNick" placeholder="Введите ваш никнейм">
-                </div>
-
-                <div class="form-group">
-                    <label for="registerPassword">Придумайте кодовое слово:</label>
-                    <input type="password" id="registerPassword" placeholder="Придумайте кодовое слово">
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Подтвердите кодовое слово:</label>
-                    <input type="password" id="confirmPassword" placeholder="Повторите кодовое слово">
-                </div>
-
-                <button class="btn" onclick="register()">Зарегистрироваться</button>
-                <div id="registerError" class="error"></div>
-            </div>
+        <div id="items" class="items-grid">
+            <div class="loading">Loading items...</div>
         </div>
     </div>
 
-    <script src="calculate.js"></script>
+    <div id="modal" class="modal" onclick="closeModalOnOutside(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>List Your Item</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="itemForm">
+                <div class="form-group">
+                    <label>Name <span class="required">*</span></label>
+                    <input type="text" id="name" required placeholder="Magic Sword">
+                </div>
+
+                <div class="form-group">
+                    <label>Price <span class="required">*</span></label>
+                    <input type="text" id="price" required placeholder="100 coins">
+                </div>
+
+                <div class="form-group">
+                    <label>Image URL <span class="required">*</span></label>
+                    <input type="url" id="image" required placeholder="https://example.com/image.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label>Telegram <span class="required">*</span></label>
+                    <input type="text" id="telegram" required placeholder="@username">
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="description" placeholder="Optional details..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Create Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURE THESE
+        const GITHUB_USERNAME = 'YOUR_USERNAME';
+        const GITHUB_REPO = 'YOUR_REPO';
+
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function closeModalOnOutside(e) {
+            if (e.target.id === 'modal') closeModal();
+        }
+
+        async function loadItems() {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/issues?labels=marketplace-item&state=open`);
+                const issues = await response.json();
+                
+                const container = document.getElementById('items');
+                
+                if (issues.length === 0) {
+                    container.innerHTML = '<div class="loading">No items yet. Click "Sell Item" to list the first one!</div>';
+                    return;
+                }
+                
+                container.innerHTML = issues.map(issue => {
+                    const body = issue.body;
+                    const name = body.match(/\*\*Name:\*\* (.+)/)?.[1] || 'Unknown';
+                    const price = body.match(/\*\*Price:\*\* (.+)/)?.[1] || 'N/A';
+                    const image = body.match(/\*\*Image:\*\* (.+)/)?.[1] || '';
+                    const telegram = body.match(/\*\*Telegram:\*\* (.+)/)?.[1] || '';
+                    const description = body.match(/\*\*Description:\*\*\s*\n(.+)/s)?.[1]?.trim() || '';
+                    
+                    return `
+                        <div class="item-card">
+                            <img src="${image}" alt="${name}" class="item-image" onerror="this.src='https://via.placeholder.com/300x200/0d1117/8b949e?text=No+Image'">
+                            <div class="item-content">
+                                <div class="item-name">${name}</div>
+                                <div class="item-price">${price}</div>
+                                ${description ? `<div class="item-description">${description}</div>` : ''}
+                                <a href="https://t.me/${telegram.replace('@', '')}" target="_blank" class="contact-btn">
+                                    Contact Seller
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                document.getElementById('items').innerHTML = '<div class="loading">Error loading items. Check your GitHub configuration.</div>';
+            }
+        }
+
+        document.getElementById('itemForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const price = document.getElementById('price').value;
+            const image = document.getElementById('image').value;
+            const telegram = document.getElementById('telegram').value;
+            const description = document.getElementById('description').value;
+            
+            const issueBody = `**Name:** ${name}
+**Price:** ${price}
+**Image:** ${image}
+**Telegram:** ${telegram}
+**Description:**
+${description || 'No description'}`;
+            
+            const issueUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO}/issues/new?title=${encodeURIComponent(name)}&body=${encodeURIComponent(issueBody)}&labels=marketplace-item`;
+            
+            window.open(issueUrl, '_blank');
+            closeModal();
+        });
+
+        loadItems();
+    </script>
 </body>
 </html>
