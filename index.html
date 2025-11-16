@@ -122,6 +122,25 @@
             background: #2ea043;
         }
 
+        .condition-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .condition-new {
+            background: #1f6feb;
+            color: white;
+        }
+
+        .condition-used {
+            background: #da3633;
+            color: white;
+        }
+
         .loading {
             text-align: center;
             padding: 60px 20px;
@@ -296,6 +315,13 @@
                     <textarea id="description" placeholder="Oпционально описание.."></textarea>
                 </div>
 
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" id="used" style="width: auto; margin-right: 8px;">
+                        <span>Б/У (Used)</span>
+                    </label>
+                </div>
+
                 <button type="submit" class="submit-btn">Create Listing</button>
             </form>
         </div>
@@ -337,11 +363,15 @@
                     const image = body.match(/\*\*Image:\*\* (.+)/)?.[1] || '';
                     const telegram = body.match(/\*\*Telegram:\*\* (.+)/)?.[1] || '';
                     const description = body.match(/\*\*Description:\*\*\s*\n(.+)/s)?.[1]?.trim() || '';
+                    const isUsed = body.match(/\*\*Condition:\*\* (.+)/)?.[1] === 'Used';
                     
                     return `
                         <div class="item-card">
                             <img src="${image}" alt="${name}" class="item-image" onerror="this.src='https://via.placeholder.com/300x200/0d1117/8b949e?text=No+Image'">
                             <div class="item-content">
+                                <div class="condition-badge ${isUsed ? 'condition-used' : 'condition-new'}">
+                                    ${isUsed ? 'Б/У' : 'Новый'}
+                                </div>
                                 <div class="item-name">${name}</div>
                                 <div class="item-price">${price}</div>
                                 ${description ? `<div class="item-description">${description}</div>` : ''}
@@ -365,11 +395,13 @@
             const image = document.getElementById('image').value;
             const telegram = document.getElementById('telegram').value;
             const description = document.getElementById('description').value;
+            const isUsed = document.getElementById('used').checked;
             
             const issueBody = `**Name:** ${name}
 **Price:** ${price}
 **Image:** ${image}
 **Telegram:** ${telegram}
+**Condition:** ${isUsed ? 'Used' : 'New'}
 **Description:**
 ${description || 'No description'}`;
             
