@@ -13,40 +13,48 @@ box-sizing: border-box;
 
 body {
 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-background: #0d1117;
-color: #c9d1d9;
+background: linear-gradient(135deg, #001B46 0%, #1a2c5a 100%);
+color: #D2E4FF;
 line-height: 1.6;
+min-height: 100vh;
 }
 
 .header {
-background: #161b22;
-border-bottom: 1px solid #30363d;
+background: rgba(0, 27, 70, 0.8);
+backdrop-filter: blur(10px);
+border-bottom: 1px solid rgba(84, 104, 134, 0.3);
 padding: 16px 32px;
 display: flex;
 justify-content: space-between;
 align-items: center;
+position: sticky;
+top: 0;
+z-index: 100;
 }
 
 .header h1 {
-font-size: 20px;
+font-size: 24px;
 font-weight: 600;
-color: #c9d1d9;
+color: #FFFFFF;
+letter-spacing: 0.5px;
 }
 
 .sell-btn {
-background: #238636;
+background: linear-gradient(to right, #F187B7, #97194F);
 color: white;
 border: none;
-padding: 8px 16px;
-border-radius: 6px;
+padding: 10px 20px;
+border-radius: 30px;
 font-size: 14px;
 font-weight: 500;
 cursor: pointer;
-transition: background 0.2s;
+transition: all 0.3s ease;
+box-shadow: 0 4px 15px rgba(241, 135, 183, 0.3);
 }
 
 .sell-btn:hover {
-background: #2ea043;
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(241, 135, 183, 0.4);
 }
 
 .container {
@@ -62,89 +70,106 @@ gap: 24px;
 }
 
 .item-card {
-background: #161b22;
-border: 1px solid #30363d;
-border-radius: 6px;
+background: rgba(210, 228, 255, 0.1);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(84, 104, 134, 0.3);
+border-radius: 12px;
 overflow: hidden;
-transition: border-color 0.2s;
+transition: all 0.3s ease;
+position: relative;
 }
 
 .item-card:hover {
-border-color: #58a6ff;
+transform: translateY(-5px);
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+border-color: rgba(241, 135, 183, 0.5);
+}
+
+.item-card::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 3px;
+background: linear-gradient(to right, #F187B7, #97194F);
 }
 
 .item-image {
 width: 100%;
 height: 200px;
 object-fit: cover;
-background: #0d1117;
-border-bottom: 1px solid #30363d;
+background: rgba(0, 0, 0, 0.2);
+border-bottom: 1px solid rgba(84, 104, 134, 0.3);
 }
 
 .item-content {
-padding: 16px;
+padding: 20px;
 }
 
 .item-name {
-font-size: 16px;
+font-size: 18px;
 font-weight: 600;
-color: #58a6ff;
-margin-bottom: 8px;
+color: #FFFFFF;
+margin-bottom: 10px;
 }
 
 .item-price {
-font-size: 20px;
-font-weight: 600;
-color: #7ee787;
+font-size: 22px;
+font-weight: 700;
+color: #F187B7;
 margin-bottom: 12px;
 }
 
 .item-description {
 font-size: 14px;
-color: #8b949e;
-margin-bottom: 12px;
+color: #D2E4FF;
+margin-bottom: 16px;
 line-height: 1.5;
 }
 
 .contact-btn {
 display: inline-block;
-background: #238636;
+background: linear-gradient(to right, #546886, #2a3a4f);
 color: white;
 text-decoration: none;
-padding: 6px 12px;
-border-radius: 6px;
-font-size: 13px;
+padding: 8px 16px;
+border-radius: 20px;
+font-size: 14px;
 font-weight: 500;
-transition: background 0.2s;
+transition: all 0.3s ease;
 }
 
 .contact-btn:hover {
-background: #2ea043;
+background: linear-gradient(to right, #2a3a4f, #1a2c5a);
+transform: translateY(-2px);
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .condition-badge {
 display: inline-block;
-padding: 4px 8px;
-border-radius: 4px;
+padding: 6px 12px;
+border-radius: 20px;
 font-size: 12px;
 font-weight: 600;
-margin-bottom: 8px;
+margin-bottom: 10px;
 }
 
 .condition-new {
-background: #1f6feb;
+background: linear-gradient(to right, #546886, #2a3a4f);
 color: white;
 }
 
 .condition-used {
-background: #da3633;
+background: linear-gradient(to right, #97194F, #7a1440);
 color: white;
 }
 
 .loading {
 text-align: center;
 padding: 60px 20px;
-color: #8b949e;
+color: #D2E4FF;
+font-size: 18px;
 }
 
 .modal {
@@ -154,10 +179,11 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background: rgba(0, 0, 0, 0.8);
+background: rgba(0, 0, 0, 0.7);
 z-index: 1000;
 align-items: center;
 justify-content: center;
+backdrop-filter: blur(5px);
 }
 
 .modal.active {
@@ -165,12 +191,14 @@ display: flex;
 }
 
 .modal-content {
-background: #161b22;
-border: 1px solid #30363d;
-border-radius: 6px;
+background: rgba(0, 27, 70, 0.9);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(84, 104, 134, 0.3);
+border-radius: 12px;
 padding: 24px;
 max-width: 500px;
 width: 90%;
+box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
 .modal-header {
@@ -178,27 +206,33 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 1px solid rgba(84, 104, 134, 0.3);
 }
 
 .modal-header h2 {
-font-size: 18px;
+font-size: 20px;
 font-weight: 600;
+color: #FFFFFF;
 }
 
 .close-btn {
 background: none;
 border: none;
-color: #8b949e;
+color: #D2E4FF;
 font-size: 24px;
 cursor: pointer;
 padding: 0;
 width: 32px;
 height: 32px;
 line-height: 1;
+border-radius: 50%;
+transition: all 0.2s;
 }
 
 .close-btn:hover {
-color: #c9d1d9;
+background: rgba(241, 135, 183, 0.2);
+color: #F187B7;
 }
 
 .form-group {
@@ -210,24 +244,32 @@ display: block;
 font-size: 14px;
 font-weight: 600;
 margin-bottom: 6px;
+color: #FFFFFF;
 }
 
 .form-group input,
 .form-group textarea {
 width: 100%;
-background: #0d1117;
-border: 1px solid #30363d;
-border-radius: 6px;
-padding: 8px 12px;
-color: #c9d1d9;
+background: rgba(0, 0, 0, 0.2);
+border: 1px solid rgba(84, 104, 134, 0.5);
+border-radius: 8px;
+padding: 12px;
+color: #FFFFFF;
 font-size: 14px;
 font-family: inherit;
+transition: all 0.3s;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
 outline: none;
-border-color: #58a6ff;
+border-color: #F187B7;
+box-shadow: 0 0 0 2px rgba(241, 135, 183, 0.2);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+color: rgba(210, 228, 255, 0.5);
 }
 
 .form-group textarea {
@@ -236,38 +278,75 @@ resize: vertical;
 }
 
 .required {
-color: #f85149;
+color: #F187B7;
 }
 
 .submit-btn {
 width: 100%;
-background: #238636;
+background: linear-gradient(to right, #F187B7, #97194F);
 color: white;
 border: none;
-padding: 10px;
-border-radius: 6px;
-font-size: 14px;
+padding: 12px;
+border-radius: 30px;
+font-size: 16px;
 font-weight: 500;
 cursor: pointer;
-transition: background 0.2s;
+transition: all 0.3s ease;
+margin-top: 10px;
+box-shadow: 0 4px 15px rgba(241, 135, 183, 0.3);
 }
 
 .submit-btn:hover {
-background: #2ea043;
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(241, 135, 183, 0.4);
 }
 
 .setup-notice {
-background: #1f6feb;
+background: linear-gradient(to right, #546886, #2a3a4f);
 color: white;
 padding: 12px 20px;
 text-align: center;
 font-size: 14px;
+border-radius: 8px;
+margin-bottom: 20px;
 }
 
 .setup-notice code {
 background: rgba(255,255,255,0.2);
 padding: 2px 6px;
 border-radius: 3px;
+}
+
+/* Custom checkbox */
+.form-group input[type="checkbox"] {
+width: auto;
+margin-right: 8px;
+}
+
+.checkbox-label {
+display: flex;
+align-items: center;
+cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+.container {
+padding: 20px;
+}
+
+.header {
+padding: 12px 20px;
+}
+
+.items-grid {
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 16px;
+}
+
+.modal-content {
+padding: 20px;
+}
 }
 </style>
 </head>
@@ -316,8 +395,8 @@ border-radius: 3px;
 </div>
 
 <div class="form-group">
-<label style="display: flex; align-items: center; cursor: pointer;">
-<input type="checkbox" id="used" style="width: auto; margin-right: 8px;">
+<label class="checkbox-label">
+<input type="checkbox" id="used">
 <span>Б/У (Used)</span>
 </label>
 </div>
@@ -330,7 +409,7 @@ border-radius: 3px;
 <script>
 // CONFIGURE THESE
 const GITHUB_USERNAME = 'foretpzs';
-        const GITHUB_REPO = 'Bobbank';
+const GITHUB_REPO = 'Bobbank';
 
 function openModal() {
 document.getElementById('modal').classList.add('active');
@@ -366,21 +445,21 @@ const description = body.match(/\*\*Description:\*\*\s*\n(.+)/s)?.[1]?.trim() ||
 const isUsed = body.match(/\*\*Condition:\*\* (.+)/)?.[1] === 'Used';
 
 return `
-                       <div class="item-card">
-                           <img src="${image}" alt="${name}" class="item-image" onerror="this.src='https://via.placeholder.com/300x200/0d1117/8b949e?text=No+Image'">
-                           <div class="item-content">
-                               <div class="condition-badge ${isUsed ? 'condition-used' : 'condition-new'}">
-                                   ${isUsed ? 'Б/У' : 'Новый'}
-                               </div>
-                               <div class="item-name">${name}</div>
-                               <div class="item-price">${price}</div>
-                               ${description ? `<div class="item-description">${description}</div>` : ''}
-                               <a href="https://t.me/${telegram.replace('@', '')}" target="_blank" class="contact-btn">
-                                   Contact Seller
-                               </a>
-                           </div>
-                       </div>
-                   `;
+<div class="item-card">
+<img src="${image}" alt="${name}" class="item-image" onerror="this.src='https://via.placeholder.com/300x200/001B46/D2E4FF?text=No+Image'">
+<div class="item-content">
+<div class="condition-badge ${isUsed ? 'condition-used' : 'condition-new'}">
+${isUsed ? 'Б/У' : 'Новый'}
+</div>
+<div class="item-name">${name}</div>
+<div class="item-price">${price}</div>
+${description ? `<div class="item-description">${description}</div>` : ''}
+<a href="https://t.me/${telegram.replace('@', '')}" target="_blank" class="contact-btn">
+Contact Seller
+</a>
+</div>
+</div>
+`;
 }).join('');
 } catch (error) {
 document.getElementById('items').innerHTML = '<div class="loading">Error loading items. Check your GitHub configuration.</div>';
