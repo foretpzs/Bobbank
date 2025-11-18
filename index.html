@@ -35,8 +35,8 @@
 
         .tabs {
             display: flex;
-            gap: 16px;
-            margin-left: 24px;
+            gap: 12px;
+            margin-left: 20px;
         }
 
         .tab {
@@ -45,24 +45,32 @@
             color: #8b949e;
             font-size: 16px;
             font-weight: 500;
-            padding: 6px 12px;
+            padding: 8px;
             cursor: pointer;
             position: relative;
-            transition: color 0.2s;
+            transition: all 0.2s;
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tab:hover {
+            background: rgba(139, 148, 158, 0.1);
         }
 
         .tab.active {
-            color: #c9d1d9;
+            color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
         }
 
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #58a6ff;
+        .tab svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
         }
 
         .action-btn {
@@ -350,14 +358,41 @@
             padding: 2px 6px;
             border-radius: 3px;
         }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .tabs {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+            
+            .header h1 {
+                margin-bottom: 8px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>BWR Marketplace</h1>
         <div class="tabs">
-            <button class="tab active" data-section="marketplace">Marketplace</button>
-            <button class="tab" data-section="jobs">Jobs</button>
+            <button class="tab active" data-section="marketplace" title="Marketplace">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </button>
+            <button class="tab" data-section="jobs" title="Jobs">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </button>
         </div>
         <button id="actionBtn" class="action-btn sell-btn">+ Sell Item</button>
     </div>
