@@ -16,6 +16,9 @@
             background: #0d1117;
             color: #c9d1d9;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .header {
@@ -25,6 +28,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .header h1 {
@@ -105,6 +109,7 @@
             max-width: 1280px;
             margin: 0 auto;
             padding: 32px;
+            flex: 1;
         }
 
         .section {
@@ -359,6 +364,102 @@
             border-radius: 3px;
         }
 
+        /* Footer Styles */
+        .footer {
+            background: #0d1117;
+            border-top: 1px solid #30363d;
+            padding: 32px 0 40px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .bwr-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #161b22;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .bwr-logo:hover {
+            border-color: #58a6ff;
+            transform: scale(1.05);
+        }
+
+        .bwr-logo img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            transition: opacity 0.3s ease;
+        }
+
+        .bwr-logo:hover img {
+            opacity: 0.8;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f6feb;
+            color: white;
+            font-size: 14px;
+            padding: 4px 12px;
+            border-radius: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .bwr-logo:hover .tooltip {
+            opacity: 1;
+        }
+
+        .partner-logos {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 12px;
+        }
+
+        .partner-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            background: #161b22;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .partner-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .partner-logo img {
+            max-width: 60%;
+            max-height: 60%;
+            object-fit: contain;
+        }
+
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -372,6 +473,12 @@
             
             .header h1 {
                 margin-bottom: 8px;
+            }
+            
+            .partner-logos {
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
             }
         }
     </style>
@@ -407,6 +514,24 @@
         <div id="jobs" class="section">
             <div id="job-listings" class="jobs-grid">
                 <div class="loading">Loading job listings...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with logos -->
+    <div class="footer">
+        <div class="logo-container">
+            <a href="https://t.me/frtzhvk" class="bwr-logo" title="Contact BWR">
+                <img src="BWR.png" alt="BWR Logo">
+                <span class="tooltip">contact BWR</span>
+            </a>
+        </div>
+        <div class="partner-logos">
+            <div class="partner-logo">
+                <img src="BOBB.png" alt="BOBB Logo">
+            </div>
+            <div class="partner-logo">
+                <img src="COOP.png" alt="COOP Logo">
             </div>
         </div>
     </div>
