@@ -33,9 +33,39 @@
             color: #c9d1d9;
         }
 
-        .sell-btn {
-            background: #2B5AAC;
-            color: white;
+        .tabs {
+            display: flex;
+            gap: 16px;
+            margin-left: 24px;
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            color: #8b949e;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 6px 12px;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .tab.active {
+            color: #c9d1d9;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #58a6ff;
+        }
+
+        .action-btn {
             border: none;
             padding: 8px 16px;
             border-radius: 6px;
@@ -45,8 +75,22 @@
             transition: background 0.2s;
         }
 
+        .sell-btn {
+            background: #2B5AAC;
+            color: white;
+        }
+
         .sell-btn:hover {
             background: #5785D5;
+        }
+
+        .job-btn {
+            background: #238636;
+            color: white;
+        }
+
+        .job-btn:hover {
+            background: #2ea043;
         }
 
         .container {
@@ -55,13 +99,21 @@
             padding: 32px;
         }
 
-        .items-grid {
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .items-grid, .jobs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 24px;
         }
 
-        .item-card {
+        .item-card, .job-card {
             background: #161b22;
             border: 1px solid #30363d;
             border-radius: 6px;
@@ -69,11 +121,11 @@
             transition: border-color 0.2s;
         }
 
-        .item-card:hover {
+        .item-card:hover, .job-card:hover {
             border-color: #58a6ff;
         }
 
-        .item-image {
+        .item-image, .job-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
@@ -81,25 +133,25 @@
             border-bottom: 1px solid #30363d;
         }
 
-        .item-content {
+        .item-content, .job-content {
             padding: 16px;
         }
 
-        .item-name {
+        .item-name, .job-name {
             font-size: 16px;
             font-weight: 600;
             color: #FCFCFC;
             margin-bottom: 8px;
         }
 
-        .item-price {
+        .item-price, .job-payment {
             font-size: 20px;
             font-weight: 600;
             color: #FFFFFF;
             margin-bottom: 12px;
         }
 
-        .item-description {
+        .item-description, .job-description {
             font-size: 14px;
             color: #8b949e;
             margin-bottom: 12px;
@@ -108,8 +160,6 @@
 
         .contact-btn {
             display: inline-block;
-            background: #2B5AAC;
-            color: white;
             text-decoration: none;
             padding: 6px 12px;
             border-radius: 6px;
@@ -118,11 +168,25 @@
             transition: background 0.2s;
         }
 
-        .contact-btn:hover {
+        .marketplace-contact {
+            background: #2B5AAC;
+            color: white;
+        }
+
+        .marketplace-contact:hover {
             background: #5785D5;
         }
 
-        .condition-badge {
+        .job-contact {
+            background: #238636;
+            color: white;
+        }
+
+        .job-contact:hover {
+            background: #2ea043;
+        }
+
+        .condition-badge, .payment-badge {
             display: inline-block;
             padding: 4px 8px;
             border-radius: 4px;
@@ -138,6 +202,11 @@
 
         .condition-used {
             background: #da3633;
+            color: white;
+        }
+
+        .payment-badge {
+            background: #8957e5;
             color: white;
         }
 
@@ -241,8 +310,6 @@
 
         .submit-btn {
             width: 100%;
-            background: #2B5AAC;
-            color: white;
             border: none;
             padding: 10px;
             border-radius: 6px;
@@ -252,8 +319,22 @@
             transition: background 0.2s;
         }
 
-        .submit-btn:hover {
+        .marketplace-submit {
+            background: #2B5AAC;
+            color: white;
+        }
+
+        .marketplace-submit:hover {
             background: #5785D5;
+        }
+
+        .job-submit {
+            background: #238636;
+            color: white;
+        }
+
+        .job-submit:hover {
+            background: #2ea043;
         }
 
         .setup-notice {
@@ -274,20 +355,33 @@
 <body>
     <div class="header">
         <h1>BWR Marketplace</h1>
-        <button class="sell-btn" onclick="openModal()">+ Sell Item</button>
+        <div class="tabs">
+            <button class="tab active" data-section="marketplace">Marketplace</button>
+            <button class="tab" data-section="jobs">Jobs</button>
+        </div>
+        <button id="actionBtn" class="action-btn sell-btn">+ Sell Item</button>
     </div>
 
     <div class="container">
-        <div id="items" class="items-grid">
-            <div class="loading">Loading items...</div>
+        <div id="marketplace" class="section active">
+            <div id="items" class="items-grid">
+                <div class="loading">Loading items...</div>
+            </div>
+        </div>
+
+        <div id="jobs" class="section">
+            <div id="job-listings" class="jobs-grid">
+                <div class="loading">Loading job listings...</div>
+            </div>
         </div>
     </div>
 
-    <div id="modal" class="modal" onclick="closeModalOnOutside(event)">
+    <!-- Marketplace Modal -->
+    <div id="itemModal" class="modal" onclick="closeModalOnOutside(event, 'itemModal')">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>List Your Item</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <button class="close-btn" onclick="closeModal('itemModal')">&times;</button>
             </div>
             <form id="itemForm">
                 <div class="form-group">
@@ -322,7 +416,45 @@
                     </label>
                 </div>
 
-                <button type="submit" class="submit-btn">Create Listing</button>
+                <button type="submit" class="submit-btn marketplace-submit">Create Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Job Modal -->
+    <div id="jobModal" class="modal" onclick="closeModalOnOutside(event, 'jobModal')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Post a Job</h2>
+                <button class="close-btn" onclick="closeModal('jobModal')">&times;</button>
+            </div>
+            <form id="jobForm">
+                <div class="form-group">
+                    <label>Business Name <span class="required">*</span></label>
+                    <input type="text" id="business-name" required placeholder="Name of business">
+                </div>
+
+                <div class="form-group">
+                    <label>Payment <span class="required">*</span></label>
+                    <input type="text" id="payment" required placeholder="e.g., $100 per day">
+                </div>
+
+                <div class="form-group">
+                    <label>Image URL <span class="required">*</span></label>
+                    <input type="url" id="job-image" required placeholder="https://example.com/logo.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label>Telegram <span class="required">*</span></label>
+                    <input type="text" id="job-telegram" required placeholder="@business_contact">
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="job-description" placeholder="Optional job description..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn job-submit">Post Job</button>
             </form>
         </div>
     </div>
@@ -332,16 +464,44 @@
         const GITHUB_USERNAME = 'foretpzs';
         const GITHUB_REPO = 'Bobbank';
 
-        function openModal() {
-            document.getElementById('modal').classList.add('active');
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding section
+                const sectionId = tab.dataset.section;
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Update action button
+                const actionBtn = document.getElementById('actionBtn');
+                if (sectionId === 'marketplace') {
+                    actionBtn.textContent = '+ Sell Item';
+                    actionBtn.className = 'action-btn sell-btn';
+                    actionBtn.onclick = () => openModal('itemModal');
+                } else {
+                    actionBtn.textContent = '+ Post Job';
+                    actionBtn.className = 'action-btn job-btn';
+                    actionBtn.onclick = () => openModal('jobModal');
+                }
+            });
+        });
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
         }
 
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
         }
 
-        function closeModalOnOutside(e) {
-            if (e.target.id === 'modal') closeModal();
+        function closeModalOnOutside(e, modalId) {
+            if (e.target.id === modalId) closeModal(modalId);
         }
 
         async function loadItems() {
@@ -375,7 +535,7 @@
                                 <div class="item-name">${name}</div>
                                 <div class="item-price">${price}</div>
                                 ${description ? `<div class="item-description">${description}</div>` : ''}
-                                <a href="https://t.me/${telegram.replace('@', '')}" target="_blank" class="contact-btn">
+                                <a href="https://t.me/${telegram.replace('@', '')}" target="_blank" class="contact-btn marketplace-contact">
                                     Contact Seller
                                 </a>
                             </div>
@@ -384,6 +544,48 @@
                 }).join('');
             } catch (error) {
                 document.getElementById('items').innerHTML = '<div class="loading">Error loading items. Check your GitHub configuration.</div>';
+            }
+        }
+
+        async function loadJobs() {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/issues?labels=BWR-JOB&state=open`);
+                const issues = await response.json();
+
+                const container = document.getElementById('job-listings');
+
+                if (issues.length === 0) {
+                    container.innerHTML = '<div class="loading">No job listings yet. Click "Post Job" to create the first one!</div>';
+                    return;
+                }
+
+                container.innerHTML = issues.map(issue => {
+                    const body = issue.body;
+                    const business = body.match(/\*\*Business:\*\* (.+)/)?.[1] || 'Unknown Business';
+                    const payment = body.match(/\*\*Payment:\*\* (.+)/)?.[1] || 'Negotiable';
+                    const image = body.match(/\*\*Image:\*\* (.+)/)?.[1] || '';
+                    const telegram = body.match(/\*\*Telegram:\*\* (.+)/)?.[1] || '';
+                    const description = body.match(/\*\*Description:\*\*\s*\n(.+)/s)?.[1]?.trim() || '';
+
+                    return `
+                        <div class="job-card">
+                            <img src="${image}" alt="${business}" class="job-image" onerror="this.src='https://via.placeholder.com/300x200/0d1117/8b949e?text=No+Logo'">
+                            <div class="job-content">
+                                <div class="payment-badge">
+                                    ${payment}
+                                </div>
+                                <div class="job-name">${business}</div>
+                                <div class="job-payment">Job Opportunity</div>
+                                ${description ? `<div class="job-description">${description}</div>` : ''}
+                                <a href="https://t.me/${telegram.replace('@', '')}" target="_blank" class="contact-btn job-contact">
+                                    Contact Business
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                document.getElementById('job-listings').innerHTML = '<div class="loading">Error loading jobs. Check your GitHub configuration.</div>';
             }
         }
 
@@ -408,10 +610,34 @@ ${description || 'No description'}`;
             const issueUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO}/issues/new?title=${encodeURIComponent(name)}&body=${encodeURIComponent(issueBody)}&labels=marketplace-item`;
 
             window.open(issueUrl, '_blank');
-            closeModal();
+            closeModal('itemModal');
         });
 
+        document.getElementById('jobForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const business = document.getElementById('business-name').value;
+            const payment = document.getElementById('payment').value;
+            const image = document.getElementById('job-image').value;
+            const telegram = document.getElementById('job-telegram').value;
+            const description = document.getElementById('job-description').value;
+
+            const issueBody = `**Business:** ${business}
+**Payment:** ${payment}
+**Image:** ${image}
+**Telegram:** ${telegram}
+**Description:**
+${description || 'No description'}`;
+
+            const issueUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO}/issues/new?title=${encodeURIComponent(business)}&body=${encodeURIComponent(issueBody)}&labels=BWR-JOB`;
+
+            window.open(issueUrl, '_blank');
+            closeModal('jobModal');
+        });
+
+        // Initialize
         loadItems();
+        loadJobs();
     </script>
 </body>
 </html>
