@@ -5,50 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BWR Marketplace</title>
     <style>
-        :root {
-            --bg-color: #0d1117;
-            --text-color: #c9d1d9;
-            --header-bg: #161b22;
-            --border-color: #30363d;
-            --card-bg: #161b22;
-            --hover-border: #58a6ff;
-            --sell-bg: #2B5AAC;
-            --sell-hover: #5785D5;
-            --job-bg: #238636;
-            --job-hover: #2ea043;
-            --contact-sell: #2B5AAC;
-            --contact-sell-hover: #5785D5;
-            --contact-job: #238636;
-            --contact-job-hover: #2ea043;
-            --condition-new: #1f6feb;
-            --condition-used: #da3633;
-            --payment-badge: #8957e5;
-            --input-bg: #0d1117;
-            --setup-notice: #1f6feb;
-        }
-
-        .light-theme {
-            --bg-color: #ffffff;
-            --text-color: #000000;
-            --header-bg: #f6f8fa;
-            --border-color: #d0d7de;
-            --card-bg: #ffffff;
-            --hover-border: #f781d0;
-            --sell-bg: #a66fcb;
-            --sell-hover: #b98bd9;
-            --job-bg: #a64db9;
-            --job-hover: #b97ad9;
-            --contact-sell: #a66fcb;
-            --contact-sell-hover: #b98bd9;
-            --contact-job: #a64db9;
-            --contact-job-hover: #b97ad9;
-            --condition-new: #a66fcb;
-            --condition-used: #d9534f;
-            --payment-badge: #b97ad9;
-            --input-bg: #f6f8fa;
-            --setup-notice: #a66fcb;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -57,8 +13,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
+            background: #0d1117;
+            color: #c9d1d9;
             line-height: 1.6;
             display: flex;
             flex-direction: column;
@@ -66,8 +22,8 @@
         }
 
         .header {
-            background: var(--header-bg);
-            border-bottom: 1px solid var(--border-color);
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
             padding: 16px 32px;
             display: flex;
             justify-content: space-between;
@@ -78,7 +34,7 @@
         .header h1 {
             font-size: 20px;
             font-weight: 600;
-            color: var(--text-color);
+            color: #c9d1d9;
         }
 
         .tabs {
@@ -111,7 +67,7 @@
         }
 
         .tab.active {
-            color: var(--hover-border);
+            color: #58a6ff;
             background: rgba(88, 166, 255, 0.1);
         }
 
@@ -132,21 +88,21 @@
         }
 
         .sell-btn {
-            background: var(--sell-bg);
+            background: #2B5AAC;
             color: white;
         }
 
         .sell-btn:hover {
-            background: var(--sell-hover);
+            background: #5785D5;
         }
 
         .job-btn {
-            background: var(--job-bg);
+            background: #238636;
             color: white;
         }
 
         .job-btn:hover {
-            background: var(--job-hover);
+            background: #2ea043;
         }
 
         .container {
@@ -171,23 +127,23 @@
         }
 
         .item-card, .job-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: #161b22;
+            border: 1px solid #30363d;
             border-radius: 6px;
             overflow: hidden;
             transition: border-color 0.2s;
         }
 
         .item-card:hover, .job-card:hover {
-            border-color: var(--hover-border);
+            border-color: #58a6ff;
         }
 
         .item-image, .job-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: var(--input-bg);
-            border-bottom: 1px solid var(--border-color);
+            background: #0d1117;
+            border-bottom: 1px solid #30363d;
         }
 
         .item-content, .job-content {
@@ -198,6 +154,7 @@
             font-size: 16px;
             font-weight: 600;
             color: #FCFCFC;
+            margin-bottom: 8px;
         }
 
         .item-price, .job-payment {
@@ -225,21 +182,21 @@
         }
 
         .marketplace-contact {
-            background: var(--contact-sell);
+            background: #2B5AAC;
             color: white;
         }
 
         .marketplace-contact:hover {
-            background: var(--contact-sell-hover);
+            background: #5785D5;
         }
 
         .job-contact {
-            background: var(--contact-job);
+            background: #238636;
             color: white;
         }
 
         .job-contact:hover {
-            background: var(--contact-job-hover);
+            background: #2ea043;
         }
 
         .condition-badge, .payment-badge {
@@ -252,17 +209,17 @@
         }
 
         .condition-new {
-            background: var(--condition-new);
+            background: #1f6feb;
             color: white;
         }
 
         .condition-used {
-            background: var(--condition-used);
+            background: #da3633;
             color: white;
         }
 
         .payment-badge {
-            background: var(--payment-badge);
+            background: #8957e5;
             color: white;
         }
 
@@ -290,8 +247,8 @@
         }
 
         .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: #161b22;
+            border: 1px solid #30363d;
             border-radius: 6px;
             padding: 24px;
             max-width: 500px;
@@ -323,7 +280,7 @@
         }
 
         .close-btn:hover {
-            color: var(--text-color);
+            color: #c9d1d9;
         }
 
         .form-group {
@@ -340,11 +297,11 @@
         .form-group input,
         .form-group textarea {
             width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
+            background: #0d1117;
+            border: 1px solid #30363d;
             border-radius: 6px;
             padding: 8px 12px;
-            color: var(--text-color);
+            color: #c9d1d9;
             font-size: 14px;
             font-family: inherit;
         }
@@ -352,7 +309,7 @@
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--hover-border);
+            border-color: #58a6ff;
         }
 
         .form-group textarea {
@@ -376,25 +333,25 @@
         }
 
         .marketplace-submit {
-            background: var(--sell-bg);
+            background: #2B5AAC;
             color: white;
         }
 
         .marketplace-submit:hover {
-            background: var(--sell-hover);
+            background: #5785D5;
         }
 
         .job-submit {
-            background: var(--job-bg);
+            background: #238636;
             color: white;
         }
 
         .job-submit:hover {
-            background: var(--job-hover);
+            background: #2ea043;
         }
 
         .setup-notice {
-            background: var(--setup-notice);
+            background: #1f6feb;
             color: white;
             padding: 12px 20px;
             text-align: center;
@@ -409,8 +366,8 @@
 
         /* Footer Styles */
         .footer {
-            background: var(--bg-color);
-            border-top: 1px solid var(--border-color);
+            background: #0d1117;
+            border-top: 1px solid #30363d;
             padding: 32px 0 40px;
             text-align: center;
             flex-shrink: 0;
@@ -426,7 +383,7 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: var(--card-bg);
+            background: #161b22;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -438,7 +395,7 @@
         }
 
         .bwr-logo:hover {
-            border-color: var(--hover-border);
+            border-color: #58a6ff;
             transform: scale(1.10);
         }
 
@@ -458,7 +415,7 @@
             bottom: -30px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--condition-new);
+            background: #1f6feb;
             color: white;
             font-size: 14px;
             padding: 4px 12px;
@@ -485,7 +442,7 @@
             width: 120px;
             height: 120px;
             border-radius: 12px;
-            background: var(--card-bg);
+            background: #161b22;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -501,29 +458,6 @@
             max-width: 60%;
             max-height: 60%;
             object-fit: contain;
-        }
-
-        /* Theme Toggle Button */
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .theme-toggle:hover {
-            background: rgba(139, 148, 158, 0.1);
-        }
-
-        .theme-toggle svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--text-color);
         }
 
         @media (max-width: 768px) {
@@ -567,14 +501,7 @@
                 </svg>
             </button>
         </div>
-        <div>
-            <button id="themeToggle" class="theme-toggle" title="Toggle Theme">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </button>
-            <button id="actionBtn" class="action-btn sell-btn">+ Sell Item</button>
-        </div>
+        <button id="actionBtn" class="action-btn sell-btn">+ Sell Item</button>
     </div>
 
     <div class="container">
@@ -696,21 +623,6 @@
         // CONFIGURE THESE
         const GITHUB_USERNAME = 'foretpzs';
         const GITHUB_REPO = 'Bobbank';
-
-        // Theme toggle functionality
-        function toggleTheme() {
-            document.body.classList.toggle('light-theme');
-            const isLight = document.body.classList.contains('light-theme');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
-
-        // Initialize theme from localStorage or default to dark
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-theme');
-            }
-        }
 
         // Tab switching functionality
         document.querySelectorAll('.tab').forEach(tab => {
@@ -884,8 +796,6 @@ ${description || 'No description'}`;
         });
 
         // Initialize
-        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-        initTheme();
         loadItems();
         loadJobs();
     </script>
