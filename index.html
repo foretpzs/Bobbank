@@ -5,6 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BWR Marketplace</title>
     <style>
+        :root {
+            /* Dark theme (default) */
+            --background: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-color: #c9d1d9;
+            --text-secondary: #8b949e;
+            --blue: #2B5AAC;
+            --blue-hover: #5785D5;
+            --green: #238636;
+            --green-hover: #2ea043;
+            --tab-active: #58a6ff;
+            --tab-active-bg: rgba(88, 166, 255, 0.1);
+            --condition-new: #1f6feb;
+            --condition-used: #da3633;
+            --payment-badge: #8957e5;
+            --input-bg: #0d1117;
+            --modal-bg: #161b22;
+        }
+
+        .light-theme {
+            /* Light theme - greens become purple, blues become pink */
+            --background: #f6f8fa;
+            --card-bg: #ffffff;
+            --border-color: #d0d7de;
+            --text-color: #24292f;
+            --text-secondary: #57606a;
+            --blue: #d63384;    /* Pink for blue elements */
+            --blue-hover: #e8549c;    /* Lighter pink */
+            --green: #8957e5;    /* Purple for green elements */
+            --green-hover: #a37de9;    /* Lighter purple */
+            --tab-active: #d63384;    /* Pink */
+            --tab-active-bg: rgba(214, 51, 132, 0.1);
+            --condition-new: #d63384;    /* Pink */
+            --condition-used: #da3633;    /* Red remains */
+            --payment-badge: #8957e5;    /* Purple remains */
+            --input-bg: #ffffff;
+            --modal-bg: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,28 +53,30 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0d1117;
-            color: #c9d1d9;
+            background: var(--background);
+            color: var(--text-color);
             line-height: 1.6;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .header {
-            background: #161b22;
-            border-bottom: 1px solid #30363d;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
             padding: 16px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .header h1 {
             font-size: 20px;
             font-weight: 600;
-            color: #c9d1d9;
+            color: var(--text-color);
         }
 
         .tabs {
@@ -46,7 +88,7 @@
         .tab {
             background: none;
             border: none;
-            color: #8b949e;
+            color: var(--text-secondary);
             font-size: 16px;
             font-weight: 500;
             padding: 8px;
@@ -67,14 +109,61 @@
         }
 
         .tab.active {
-            color: #58a6ff;
-            background: rgba(88, 166, 255, 0.1);
+            color: var(--tab-active);
+            background: var(--tab-active-bg);
         }
 
         .tab svg {
             width: 24px;
             height: 24px;
-            fill: currentColor;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(139, 148, 158, 0.1);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: none;
+        }
+
+        body:not(.light-theme) .sun-icon {
+            display: block;
+        }
+
+        body.light-theme .moon-icon {
+            display: block;
         }
 
         .action-btn {
@@ -88,21 +177,21 @@
         }
 
         .sell-btn {
-            background: #2B5AAC;
+            background: var(--blue);
             color: white;
         }
 
         .sell-btn:hover {
-            background: #5785D5;
+            background: var(--blue-hover);
         }
 
         .job-btn {
-            background: #238636;
+            background: var(--green);
             color: white;
         }
 
         .job-btn:hover {
-            background: #2ea043;
+            background: var(--green-hover);
         }
 
         .container {
@@ -127,23 +216,23 @@
         }
 
         .item-card, .job-card {
-            background: #161b22;
-            border: 1px solid #30363d;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             overflow: hidden;
             transition: border-color 0.2s;
         }
 
         .item-card:hover, .job-card:hover {
-            border-color: #58a6ff;
+            border-color: var(--tab-active);
         }
 
         .item-image, .job-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: #0d1117;
-            border-bottom: 1px solid #30363d;
+            background: var(--background);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .item-content, .job-content {
@@ -166,7 +255,7 @@
 
         .item-description, .job-description {
             font-size: 14px;
-            color: #8b949e;
+            color: var(--text-secondary);
             margin-bottom: 12px;
             line-height: 1.5;
         }
@@ -182,21 +271,21 @@
         }
 
         .marketplace-contact {
-            background: #2B5AAC;
+            background: var(--blue);
             color: white;
         }
 
         .marketplace-contact:hover {
-            background: #5785D5;
+            background: var(--blue-hover);
         }
 
         .job-contact {
-            background: #238636;
+            background: var(--green);
             color: white;
         }
 
         .job-contact:hover {
-            background: #2ea043;
+            background: var(--green-hover);
         }
 
         .condition-badge, .payment-badge {
@@ -209,24 +298,24 @@
         }
 
         .condition-new {
-            background: #1f6feb;
+            background: var(--condition-new);
             color: white;
         }
 
         .condition-used {
-            background: #da3633;
+            background: var(--condition-used);
             color: white;
         }
 
         .payment-badge {
-            background: #8957e5;
+            background: var(--payment-badge);
             color: white;
         }
 
         .loading {
             text-align: center;
             padding: 60px 20px;
-            color: #8b949e;
+            color: var(--text-secondary);
         }
 
         .modal {
@@ -247,12 +336,13 @@
         }
 
         .modal-content {
-            background: #161b22;
-            border: 1px solid #30363d;
+            background: var(--modal-bg);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 24px;
             max-width: 500px;
             width: 90%;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .modal-header {
@@ -265,22 +355,24 @@
         .modal-header h2 {
             font-size: 18px;
             font-weight: 600;
+            color: var(--text-color);
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: #8b949e;
+            color: var(--text-secondary);
             font-size: 24px;
             cursor: pointer;
             padding: 0;
             width: 32px;
             height: 32px;
             line-height: 1;
+            transition: color 0.2s;
         }
 
         .close-btn:hover {
-            color: #c9d1d9;
+            color: var(--text-color);
         }
 
         .form-group {
@@ -292,24 +384,26 @@
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 6px;
+            color: var(--text-color);
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            background: #0d1117;
-            border: 1px solid #30363d;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 8px 12px;
-            color: #c9d1d9;
+            color: var(--text-color);
             font-size: 14px;
             font-family: inherit;
+            transition: border-color 0.2s, background-color 0.2s, color 0.2s;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #58a6ff;
+            border-color: var(--tab-active);
         }
 
         .form-group textarea {
@@ -333,25 +427,25 @@
         }
 
         .marketplace-submit {
-            background: #2B5AAC;
+            background: var(--blue);
             color: white;
         }
 
         .marketplace-submit:hover {
-            background: #5785D5;
+            background: var(--blue-hover);
         }
 
         .job-submit {
-            background: #238636;
+            background: var(--green);
             color: white;
         }
 
         .job-submit:hover {
-            background: #2ea043;
+            background: var(--green-hover);
         }
 
         .setup-notice {
-            background: #1f6feb;
+            background: var(--tab-active);
             color: white;
             padding: 12px 20px;
             text-align: center;
@@ -366,11 +460,12 @@
 
         /* Footer Styles */
         .footer {
-            background: #0d1117;
-            border-top: 1px solid #30363d;
+            background: var(--background);
+            border-top: 1px solid var(--border-color);
             padding: 32px 0 40px;
             text-align: center;
             flex-shrink: 0;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .logo-container {
@@ -383,7 +478,7 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: #161b22;
+            background: var(--card-bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -395,7 +490,7 @@
         }
 
         .bwr-logo:hover {
-            border-color: #58a6ff;
+            border-color: var(--tab-active);
             transform: scale(1.10);
         }
 
@@ -415,7 +510,7 @@
             bottom: -30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1f6feb;
+            background: var(--tab-active);
             color: white;
             font-size: 14px;
             padding: 4px 12px;
@@ -442,16 +537,18 @@
             width: 120px;
             height: 120px;
             border-radius: 12px;
-            background: #161b22;
+            background: var(--card-bg);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
         }
 
         .partner-logo:hover {
             transform: scale(1.10);
+            border-color: var(--tab-active);
         }
 
         .partner-logo img {
@@ -500,6 +597,22 @@
                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                 </svg>
             </button>
+            <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
         </div>
         <button id="actionBtn" class="action-btn sell-btn">+ Sell Item</button>
     </div>
@@ -522,16 +635,16 @@
     <div class="footer">
         <div class="logo-container">
             <a href="https://t.me/frtzhvk" class="bwr-logo" title="Contact BWR">
-                <img src="BWR.png" alt="BWR Logo">
+                <div style="width: 100px; height: 100px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 40px;">BWR</div>
                 <span class="tooltip">contact BWR</span>
             </a>
         </div>
         <div class="partner-logos">
             <div class="partner-logo">
-                <img src="BOBB.png" alt="BOBB Logo">
+                <div style="width: 80px; height: 80px; background: var(--green); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 30px;">BOBB</div>
             </div>
             <div class="partner-logo">
-                <img src="COOP.png" alt="COOP Logo">
+                <div style="width: 80px; height: 80px; background: #6a35ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 30px;">COOP</div>
             </div>
         </div>
     </div>
@@ -624,6 +737,24 @@
         const GITHUB_USERNAME = 'foretpzs';
         const GITHUB_REPO = 'Bobbank';
 
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or respect OS preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        if (savedTheme === 'light' || (!savedTheme && !prefersDarkScheme.matches)) {
+            body.classList.add('light-theme');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-theme');
+            const isLightTheme = body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+        });
+
         // Tab switching functionality
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -687,7 +818,9 @@
 
                     return `
                         <div class="item-card">
-                            <img src="${image}" alt="${name}" class="item-image" onerror="this.src='https://via.placeholder.com/300x200/0d1117/8b949e?text=No+Image'">
+                            <div class="item-image" style="background: var(--background); display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+                                <div style="font-size: 40px;">📦</div>
+                            </div>
                             <div class="item-content">
                                 <div class="condition-badge ${isUsed ? 'condition-used' : 'condition-new'}">
                                     ${isUsed ? 'Б/У' : 'Новый'}
@@ -729,7 +862,9 @@
 
                     return `
                         <div class="job-card">
-                            <img src="${image}" alt="${business}" class="job-image" onerror="this.src='https://via.placeholder.com/300x200/0d1117/8b949e?text=No+Logo'">
+                            <div class="job-image" style="background: var(--background); display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+                                <div style="font-size: 40px;">💼</div>
+                            </div>
                             <div class="job-content">
                                 <div class="payment-badge">
                                     ${payment}
