@@ -380,6 +380,8 @@
         }
 
         .bwr-logo {
+            width: 160px;
+            height: 160px;
             width: 150px;
             height: 150px;
             border-radius: 50%;
@@ -439,6 +441,8 @@
         }
 
         .partner-logo {
+            width: 100px;
+            height: 100px;
             width: 120px;
             height: 120px;
             border-radius: 12px;
@@ -465,16 +469,16 @@
                 flex-direction: column;
                 gap: 16px;
             }
-            
+
             .tabs {
                 margin-left: 0;
                 margin-top: 8px;
             }
-            
+
             .header h1 {
                 margin-bottom: 8px;
             }
-            
+
             .partner-logos {
                 flex-direction: column;
                 align-items: center;
@@ -630,14 +634,14 @@
                 // Update active tab
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                
+
                 // Show corresponding section
                 const sectionId = tab.dataset.section;
                 document.querySelectorAll('.section').forEach(section => {
                     section.classList.remove('active');
                 });
                 document.getElementById(sectionId).classList.add('active');
-                
+
                 // Update action button
                 const actionBtn = document.getElementById('actionBtn');
                 if (sectionId === 'marketplace') {
