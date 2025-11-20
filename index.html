@@ -13,7 +13,6 @@
         <h1>BWR Marketplace</h1>
 
         <div class="tabs">
-            <!-- Marketplace -->
             <button class="tab active" data-section="marketplace" title="Marketplace">
                 <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
                     <circle cx="9" cy="21" r="1"></circle>
@@ -40,27 +39,23 @@
         </div>
     </div>
 
-    <!-- "+" BUTTON -->
     <button id="actionBtn" class="action-btn" onclick="openModal('itemModal')">+</button>
 </div>
 
 <div class="container">
 
-    <!-- Marketplace -->
     <div id="marketplace" class="section active">
         <div id="items" class="items-grid">
             <div class="loading">Loading items...</div>
         </div>
     </div>
 
-    <!-- Jobs -->
     <div id="jobs" class="section">
         <div id="job-listings" class="jobs-grid">
             <div class="loading">Loading jobs...</div>
         </div>
     </div>
 
-    <!-- Search -->
     <div id="search" class="section">
         <input type="text" id="searchInput" class="search-box" placeholder="Search items...">
         <div id="searchResults" class="items-grid"></div>
@@ -68,7 +63,6 @@
 
 </div>
 
-<!-- Item Modal -->
 <div id="itemModal" class="modal" onclick="closeModalOnOutside(event, 'itemModal')">
     <div class="modal-content">
         <div class="modal-header">
@@ -92,7 +86,6 @@
     </div>
 </div>
 
-<!-- Job Modal -->
 <div id="jobModal" class="modal" onclick="closeModalOnOutside(event, 'jobModal')">
     <div class="modal-content">
         <div class="modal-header">
@@ -118,7 +111,6 @@
 const GITHUB_USERNAME = "foretpzs";
 const GITHUB_REPO = "Bobbank";
 
-/* TAB SWITCHING */
 document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", () => {
         document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
@@ -140,12 +132,10 @@ document.querySelectorAll(".tab").forEach(tab => {
     });
 });
 
-/* MODALS */
 function openModal(id) { document.getElementById(id).classList.add("active"); }
 function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 function closeModalOnOutside(e, id) { if (e.target.id === id) closeModal(id); }
 
-/* LOAD MARKETPLACE */
 async function loadItems() {
     const res = await fetch(
         `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/issues?labels=marketplace-item&state=open`
@@ -178,7 +168,6 @@ async function loadItems() {
     }).join("");
 }
 
-/* LOAD JOBS */
 async function loadJobs() {
     const res = await fetch(
         `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/issues?labels=BWR-JOB&state=open`
@@ -206,7 +195,6 @@ async function loadJobs() {
     }).join("");
 }
 
-/* SEARCH PAGE */
 document.getElementById("searchInput").addEventListener("input", async e => {
     const q = e.target.value.toLowerCase().trim();
     const res = await fetch(
