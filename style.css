@@ -145,25 +145,29 @@ body {
     border-color: #58a6ff;
 }
 
-.items-grid, .jobs-grid {
+/* Grid Layouts */
+.items-grid, .jobs-grid, .estate-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
 }
 
-.item-card, .job-card {
+/* Common Card Styles */
+.item-card, .job-card, .estate-card {
     background: #161b22;
     border: 1px solid #30363d;
     border-radius: 6px;
     overflow: hidden;
     transition: border-color 0.2s;
+    display: flex;
+    flex-direction: column;
 }
 
-.item-card:hover, .job-card:hover {
+.item-card:hover, .job-card:hover, .estate-card:hover {
     border-color: #58a6ff;
 }
 
-.item-image, .job-image {
+.item-image, .job-image, .estate-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -171,29 +175,83 @@ body {
     border-bottom: 1px solid #30363d;
 }
 
-.item-content, .job-content {
+.item-content, .job-content, .estate-content {
     padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.item-name, .job-name {
+.item-name, .job-name, .estate-name {
     font-size: 16px;
     font-weight: 600;
     color: #FCFCFC;
     margin-bottom: 8px;
 }
 
-.item-price, .job-payment {
+.item-price, .job-payment, .estate-price {
     font-size: 20px;
     font-weight: 600;
     color: #FFFFFF;
     margin-bottom: 12px;
 }
 
-.item-description, .job-description {
+.item-description, .job-description, .estate-description {
     font-size: 14px;
     color: #8b949e;
     margin-bottom: 12px;
     line-height: 1.5;
+    flex: 1;
+}
+
+/* Estate Specifics */
+.estate-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    background: #d29922;
+    color: white;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+    background: #0d1117;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+}
+
+.room-item {
+    text-align: center;
+    font-size: 12px;
+    padding: 4px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.room-available {
+    color: #3fb950;
+    border: 1px solid rgba(63, 185, 80, 0.3);
+}
+
+.room-taken {
+    color: #f85149;
+    border: 1px solid rgba(248, 81, 73, 0.3);
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.room-floor {
+    display: block;
+    font-size: 10px;
+    color: #8b949e;
+    margin-top: 2px;
 }
 
 .contact-btn {
@@ -204,25 +262,20 @@ body {
     font-size: 13px;
     font-weight: 500;
     transition: background 0.2s;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    width: 100%;
 }
 
-.marketplace-contact {
-    background: #2B5AAC;
-    color: white;
-}
+.marketplace-contact { background: #2B5AAC; color: white; }
+.marketplace-contact:hover { background: #5785D5; }
 
-.marketplace-contact:hover {
-    background: #5785D5;
-}
+.job-contact { background: #238636; color: white; }
+.job-contact:hover { background: #2ea043; }
 
-.job-contact {
-    background: #238636;
-    color: white;
-}
-
-.job-contact:hover {
-    background: #2ea043;
-}
+.estate-contact { background: #d29922; color: white; }
+.estate-contact:hover { background: #eac54f; }
 
 .condition-badge, .payment-badge {
     display: inline-block;
@@ -233,20 +286,9 @@ body {
     margin-bottom: 8px;
 }
 
-.condition-new {
-    background: #1f6feb;
-    color: white;
-}
-
-.condition-used {
-    background: #da3633;
-    color: white;
-}
-
-.payment-badge {
-    background: #8957e5;
-    color: white;
-}
+.condition-new { background: #1f6feb; color: white; }
+.condition-used { background: #da3633; color: white; }
+.payment-badge { background: #8957e5; color: white; }
 
 .loading {
     text-align: center;
@@ -254,6 +296,7 @@ body {
     color: #8b949e;
 }
 
+/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -322,7 +365,8 @@ body {
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
     width: 100%;
     background: #0d1117;
     border: 1px solid #30363d;
@@ -334,7 +378,8 @@ body {
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: #58a6ff;
 }
@@ -359,23 +404,14 @@ body {
     transition: background 0.2s;
 }
 
-.marketplace-submit {
-    background: #2B5AAC;
-    color: white;
-}
+.marketplace-submit { background: #2B5AAC; color: white; }
+.marketplace-submit:hover { background: #5785D5; }
 
-.marketplace-submit:hover {
-    background: #5785D5;
-}
+.job-submit { background: #238636; color: white; }
+.job-submit:hover { background: #2ea043; }
 
-.job-submit {
-    background: #238636;
-    color: white;
-}
-
-.job-submit:hover {
-    background: #2ea043;
-}
+.estate-submit { background: #d29922; color: white; }
+.estate-submit:hover { background: #eac54f; }
 
 .legal-notice {
     background: #21262d;
@@ -520,7 +556,7 @@ body {
         gap: 16px;
     }
 
-    .items-grid, .jobs-grid {
+    .items-grid, .jobs-grid, .estate-grid {
         grid-template-columns: 1fr;
     }
 }
