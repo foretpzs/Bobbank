@@ -24,6 +24,11 @@
                         <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                     </svg>
                 </button>
+                <button class="tab" data-section="estate" title="BWR & Regus Centre">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 21h18M5 21V7l8-4 8 4v14M8 21V12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v9"></path>
+                    </svg>
+                </button>
                 <button class="tab" data-section="search" title="Search">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
@@ -48,6 +53,12 @@
             </div>
         </div>
 
+        <div id="estate" class="section">
+            <div id="estate-listings" class="estate-grid">
+                <div class="loading">Loading office listings...</div>
+            </div>
+        </div>
+
         <div id="search" class="section">
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-input" placeholder="Поиск товара...">
@@ -58,7 +69,6 @@
         </div>
     </div>
 
-    <!-- Footer with logos -->
     <div class="footer">
         <div class="logo-container">
             <a href="https://t.me/frtzhvk" class="bwr-logo" title="Contact BWR">
@@ -76,7 +86,6 @@
         </div>
     </div>
 
-    <!-- Marketplace Modal -->
     <div id="itemModal" class="modal" onclick="closeModalOnOutside(event, 'itemModal')">
         <div class="modal-content">
             <div class="modal-header">
@@ -121,7 +130,6 @@
         </div>
     </div>
 
-    <!-- Job Modal -->
     <div id="jobModal" class="modal" onclick="closeModalOnOutside(event, 'jobModal')">
         <div class="modal-content">
             <div class="modal-header">
@@ -163,6 +171,36 @@
         </div>
     </div>
 
+    <div id="rentModal" class="modal" onclick="closeModalOnOutside(event, 'rentModal')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Rent Property</h2>
+                <button class="close-btn" onclick="closeModal('rentModal')">&times;</button>
+            </div>
+            <form id="rentForm">
+                <input type="hidden" id="rent-type">
+                <input type="hidden" id="rent-size">
+                
+                <div class="form-group">
+                    <label>Available Units <span class="required">*</span></label>
+                    <select id="rent-unit-select" required>
+                        </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Duration (Days) <span class="required">*</span></label>
+                    <input type="number" id="rent-days" min="1" value="1" required placeholder="Number of days">
+                </div>
+
+                <div class="form-group">
+                    <p style="font-size: 14px; color: #8b949e;" id="rent-summary"></p>
+                </div>
+
+                <button type="submit" class="submit-btn estate-submit">Proceed to Telegram</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // CONFIGURE THESE
         const GITHUB_USERNAME = 'foretpzs';
@@ -184,19 +222,22 @@
                 });
                 document.getElementById(sectionId).classList.add('active');
 
-                // Update action button
+                // Update action button logic
                 const actionBtn = document.getElementById('actionBtn');
                 if (sectionId === 'marketplace') {
+                    actionBtn.style.display = 'flex';
                     actionBtn.className = 'action-btn sell-btn';
                     actionBtn.onclick = () => openModal('itemModal');
                 } else if (sectionId === 'jobs') {
+                    actionBtn.style.display = 'flex';
                     actionBtn.className = 'action-btn job-btn';
                     actionBtn.onclick = () => openModal('jobModal');
+                } else if (sectionId === 'estate') {
+                    // Hide ADD button for Real Estate (Admin only adds via Issues)
+                    actionBtn.style.display = 'none';
                 } else {
                     actionBtn.style.display = 'none';
-                    return;
                 }
-                actionBtn.style.display = 'block';
             });
         });
 
@@ -212,6 +253,7 @@
             if (e.target.id === modalId) closeModal(modalId);
         }
 
+        // --- ITEM RENDERING ---
         function renderItemCard(issue) {
             const body = issue.body;
             const name = body.match(/\*\*Name:\*\* (.+)/)?.[1] || 'Unknown';
@@ -239,19 +281,147 @@
             `;
         }
 
+        // --- REAL ESTATE LOGIC ---
+        function generateRoomList(type, size, takenString) {
+            const takenRooms = takenString.split(',').map(s => s.trim());
+            let rooms = [];
+            let floors = [];
+            let suffixes = [];
+
+            // Define Rules based on Prompt
+            if (type === 'Office') {
+                floors = [4, 5, 6, 7];
+                if (size === 'Small') suffixes = ['01'];
+                else if (size === 'Medium') suffixes = ['02'];
+                else if (size === 'Large') suffixes = ['03'];
+            } else if (type === 'Apartment') {
+                floors = [2, 3];
+                if (size === 'Small') suffixes = ['02', '03'];
+                else if (size === 'Large') suffixes = ['01', '04'];
+            }
+
+            // Generate Rooms
+            floors.forEach(floor => {
+                suffixes.forEach(suffix => {
+                    const roomNum = `${floor}${suffix}`;
+                    rooms.push({
+                        number: roomNum,
+                        floor: floor,
+                        isTaken: takenRooms.includes(roomNum)
+                    });
+                });
+            });
+
+            return rooms;
+        }
+
+        function openRentModal(type, size, price, roomsJson) {
+            const rooms = JSON.parse(decodeURIComponent(roomsJson));
+            const availableRooms = rooms.filter(r => !r.isTaken);
+            
+            const select = document.getElementById('rent-unit-select');
+            select.innerHTML = '';
+
+            if (availableRooms.length === 0) {
+                const option = document.createElement('option');
+                option.text = "No units available";
+                select.add(option);
+                select.disabled = true;
+            } else {
+                select.disabled = false;
+                availableRooms.forEach(r => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify(r); // Store whole obj
+                    option.text = `Floor ${r.floor} - Unit ${r.number}`;
+                    select.add(option);
+                });
+            }
+
+            document.getElementById('rent-type').value = type;
+            document.getElementById('rent-size').value = size;
+            document.getElementById('rent-summary').innerText = `Price: ${price} per day`;
+            
+            openModal('rentModal');
+        }
+
+        // Handle Rent Form Submit
+        document.getElementById('rentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const select = document.getElementById('rent-unit-select');
+            if (select.disabled) return;
+
+            const roomData = JSON.parse(select.value); // {number: "403", floor: 4, ...}
+            const days = document.getElementById('rent-days').value;
+            const type = document.getElementById('rent-type').value; // Office/Apartment
+            const size = document.getElementById('rent-size').value; // Small/Large
+
+            // Construct Message
+            // "Здравствуйте! хочу арендовать офис размера (office size). на (days) день/ня/ней. На (floor number) под номером (number)"
+            
+            // Translation mapping for cleaner Russian
+            const typeRu = type === 'Office' ? 'офис' : 'апартаменты';
+            const sizeRu = size === 'Small' ? 'маленького' : (size === 'Medium' ? 'среднего' : 'большого');
+            
+            const message = `Здравствуйте! Хочу арендовать ${typeRu} ${sizeRu} размера. На ${days} день/дня/дней. На ${roomData.floor} этаже под номером ${roomData.number}.`;
+            
+            const telegramUrl = `https://t.me/frtzhvk?text=${encodeURIComponent(message)}`;
+            window.open(telegramUrl, '_blank');
+            closeModal('rentModal');
+        });
+
+        function renderEstateCard(issue) {
+            const body = issue.body;
+            const type = body.match(/\*\*Type:\*\* (.+)/)?.[1] || 'Office';
+            const size = body.match(/\*\*Size:\*\* (.+)/)?.[1] || 'Small';
+            const price = body.match(/\*\*Price:\*\* (.+)/)?.[1] || '0';
+            const image = body.match(/\*\*Image:\*\* (.+)/)?.[1] || '';
+            const taken = body.match(/\*\*Taken:\*\* (.*)/)?.[1] || '';
+            const description = body.match(/\*\*Description:\*\*\s*\n(.+)/s)?.[1]?.trim() || '';
+
+            const rooms = generateRoomList(type, size, taken);
+            const roomsJson = encodeURIComponent(JSON.stringify(rooms));
+
+            const roomGridHtml = rooms.map(r => `
+                <div class="room-item ${r.isTaken ? 'room-taken' : 'room-available'}">
+                    ${r.number}
+                    <span class="room-floor">${r.floor} fl</span>
+                </div>
+            `).join('');
+
+            return `
+                <div class="estate-card">
+                    <img src="${image}" alt="${type} ${size}" class="estate-image" onerror="this.src='https://via.placeholder.com/300x200/0d1117/8b949e?text=BWR+Estate'">
+                    <div class="estate-content">
+                        <div class="estate-badge">${type} - ${size}</div>
+                        <div class="estate-name">BWR Centre ${type}</div>
+                        <div class="estate-price">${price} / day</div>
+                        
+                        <div class="rooms-grid">
+                            ${roomGridHtml}
+                        </div>
+
+                        ${description ? `<div class="estate-description">${description}</div>` : ''}
+                        
+                        <button onclick="openRentModal('${type}', '${size}', '${price}', '${roomsJson}')" class="contact-btn estate-contact">
+                            Check Availability & Rent
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- LOADING FUNCTIONS ---
+
         async function loadItems() {
             try {
                 const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/issues?labels=marketplace-item&state=open`);
                 const issues = await response.json();
                 allItems = issues;
-
                 const container = document.getElementById('items');
-
                 if (issues.length === 0) {
                     container.innerHTML = '<div class="loading">No items yet. Click "+" to list the first one!</div>';
                     return;
                 }
-
                 container.innerHTML = issues.map(renderItemCard).join('');
             } catch (error) {
                 document.getElementById('items').innerHTML = '<div class="loading">Error loading items. Check your GitHub configuration.</div>';
@@ -262,14 +432,11 @@
             try {
                 const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/issues?labels=BWR-JOB&state=open`);
                 const issues = await response.json();
-
                 const container = document.getElementById('job-listings');
-
                 if (issues.length === 0) {
                     container.innerHTML = '<div class="loading">No job listings yet. Click "+" to create the first one!</div>';
                     return;
                 }
-
                 container.innerHTML = issues.map(issue => {
                     const body = issue.body;
                     const business = body.match(/\*\*Business:\*\* (.+)/)?.[1] || 'Unknown Business';
@@ -282,9 +449,7 @@
                         <div class="job-card">
                             <img src="${image}" alt="${business}" class="job-image" onerror="this.src='https://via.placeholder.com/300x200/0d1117/8b949e?text=No+Logo'">
                             <div class="job-content">
-                                <div class="payment-badge">
-                                    ${payment}
-                                </div>
+                                <div class="payment-badge">${payment}</div>
                                 <div class="job-name">${business}</div>
                                 <div class="job-payment">Job Opportunity</div>
                                 ${description ? `<div class="job-description">${description}</div>` : ''}
@@ -297,6 +462,23 @@
                 }).join('');
             } catch (error) {
                 document.getElementById('job-listings').innerHTML = '<div class="loading">Error loading jobs. Check your GitHub configuration.</div>';
+            }
+        }
+
+        async function loadEstate() {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/issues?labels=BWR-ESTATE&state=open`);
+                const issues = await response.json();
+                const container = document.getElementById('estate-listings');
+
+                if (issues.length === 0) {
+                    container.innerHTML = '<div class="loading">No properties listed yet.</div>';
+                    return;
+                }
+
+                container.innerHTML = issues.map(renderEstateCard).join('');
+            } catch (error) {
+                document.getElementById('estate-listings').innerHTML = '<div class="loading">Error loading estate listings.</div>';
             }
         }
 
@@ -321,13 +503,11 @@
                 resultsContainer.innerHTML = '<div class="loading">Товары не найдены</div>';
                 return;
             }
-
             resultsContainer.innerHTML = filtered.map(renderItemCard).join('');
         });
 
         document.getElementById('itemForm').addEventListener('submit', (e) => {
             e.preventDefault();
-
             const name = document.getElementById('name').value;
             const price = document.getElementById('price').value;
             const image = document.getElementById('image').value;
@@ -335,38 +515,22 @@
             const description = document.getElementById('description').value;
             const isUsed = document.getElementById('used').checked;
 
-            const issueBody = `**Name:** ${name}
-**Price:** ${price}
-**Image:** ${image}
-**Telegram:** ${telegram}
-**Condition:** ${isUsed ? 'Used' : 'New'}
-**Description:**
-${description || 'No description'}`;
-
+            const issueBody = `**Name:** ${name}\n**Price:** ${price}\n**Image:** ${image}\n**Telegram:** ${telegram}\n**Condition:** ${isUsed ? 'Used' : 'New'}\n**Description:**\n${description || 'No description'}`;
             const issueUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO}/issues/new?title=${encodeURIComponent(name)}&body=${encodeURIComponent(issueBody)}&labels=marketplace-item`;
-
             window.open(issueUrl, '_blank');
             closeModal('itemModal');
         });
 
         document.getElementById('jobForm').addEventListener('submit', (e) => {
             e.preventDefault();
-
             const business = document.getElementById('business-name').value;
             const payment = document.getElementById('payment').value;
             const image = document.getElementById('job-image').value;
             const telegram = document.getElementById('job-telegram').value;
             const description = document.getElementById('job-description').value;
 
-            const issueBody = `**Business:** ${business}
-**Payment:** ${payment}
-**Image:** ${image}
-**Telegram:** ${telegram}
-**Description:**
-${description || 'No description'}`;
-
+            const issueBody = `**Business:** ${business}\n**Payment:** ${payment}\n**Image:** ${image}\n**Telegram:** ${telegram}\n**Description:**\n${description || 'No description'}`;
             const issueUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO}/issues/new?title=${encodeURIComponent(business)}&body=${encodeURIComponent(issueBody)}&labels=BWR-JOB`;
-
             window.open(issueUrl, '_blank');
             closeModal('jobModal');
         });
@@ -374,6 +538,7 @@ ${description || 'No description'}`;
         // Initialize
         loadItems();
         loadJobs();
+        loadEstate();
     </script>
 </body>
 </html>
